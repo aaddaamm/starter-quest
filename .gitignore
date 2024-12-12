@@ -1,0 +1,61 @@
+# Binary files
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.a
+*.lib
+
+# CMake build files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+
+# Debugger files
+*.gch
+*.dSYM/
+vgcore.*
+
+# Logs
+*.log
+
+# OS-specific files
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Temporary files created by editors or file systems
+*~
+.*.swp
+*.tmp
+*.bak
+*.old
+*.orig
+*.rej
+*.swo
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# C++ cache and debugging information
+*.stackdump
+*.core
+
+# Executable files
+bin/*
