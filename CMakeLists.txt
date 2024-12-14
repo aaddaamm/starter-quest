@@ -22,12 +22,13 @@ endif()
 
 # Include the baseClasses directory for header files
 target_include_directories(Quest PRIVATE ${CMAKE_SOURCE_DIR}/baseClasses)
+target_include_directories(Quest PRIVATE ${CMAKE_SOURCE_DIR}/characterClasses)
 
 # Add source files from the baseClasses directory
-file(GLOB SOURCES "baseClasses/*.cpp")
+file(GLOB BASE_SOURCES "baseClasses/*.cpp")
+file(GLOB CHARACTER_SOURCES "characterClasses/*.cpp")
 
-# Link the source files from baseClasses to the Quest executable
-target_sources(Quest PRIVATE ${SOURCES})
+target_sources(Quest PRIVATE ${BASE_SOURCES} ${CHARACTER_SOURCES})
 
 # Optional: Set the output directory for the binary (can be customized)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)

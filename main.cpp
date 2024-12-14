@@ -6,6 +6,8 @@ const char* quest() {
   return "Quest!";
 }
 
+// Main function
+// TODO: a user should be able to pick a class for their character
 int main() {
   std::string heroName;
   std::string heroClass;
@@ -18,7 +20,7 @@ int main() {
 
   std::cin >> heroClass;
 
-  Character character(20, 100, heroName, heroRace, "Earth", "6'2\"", "180 lbs");
+  Character character(heroName, 20, 100, heroRace, "Earth", "6'2\"", "180 lbs");
 
   std::cout << "Your hero's name is " << character.getName() << "\n" << std::endl;
   std::cout << "Your hero's class is " << heroClass << "\n" << std::endl;

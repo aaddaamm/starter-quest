@@ -1,19 +1,20 @@
+#include <iostream>
 #include <string>
 #include "Character.h"
 #include "Stats.h"
 
 Character::Character(
-  int age,
-  int health,
   const std::string& name,
-  const std::string& race,
-  const std::string& origin,
-  const std::string& height,
-  const std::string& weight
+  int age = 25,
+  int health = 100,
+  const std::string& race = "Human",
+  const std::string& origin = "Earth",
+  const std::string& height = "6'0\"",
+  const std::string& weight = "180 lbs"
 ) :
+  name(name),
   age(age),
   health(health),
-  name(name),
   race(race),
   origin(origin),
   height(height),
@@ -21,6 +22,18 @@ Character::Character(
   stats() {
     // Add validation here,
     // e.g., check if age is non-negative
+}
+
+void Character::chooseVocation() {
+  std::cout << name << " is undecided about their vocation" << std::endl;
+}
+
+void Character::attack() {
+  std::cout << name << " attacks with the basic attack!" << std::endl;
+}
+
+void Character::setName(const std::string& name) {
+  this->name = name;
 }
 
 int Character::getAge() const { return age; }
