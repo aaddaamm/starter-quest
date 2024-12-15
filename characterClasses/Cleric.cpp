@@ -1,6 +1,9 @@
 #include "Cleric.h"
 #include <iostream>
 
+// TODO: a cleric should have unique stats
+// TODO: a cleric should have unique abilities
+// TODO: a cleric should have unique spells
 Cleric::Cleric(
   const std::string& name,
   int age,

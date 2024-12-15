@@ -3,6 +3,12 @@
 
 #include "../baseClasses/Character.h"
 
+//TODO: A cleric should be able to heal
+//TODO: A cleric should be able to cast spells
+//TODO: A cleric should be able to equip a weapon
+//TODO: A cleric's attack should be modified by the weapon they have equipped
+
+// Cleric class, inherits from Character
 class Cleric : public Character {
   public:
     Cleric(

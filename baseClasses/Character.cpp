@@ -3,6 +3,19 @@
 #include "Character.h"
 #include "Stats.h"
 
+//TODO: Add validation for the constructor
+//TODO: Add validation for the age
+//TODO: A character should be able to level up
+//TODO: A character should be able to gain experience
+//TODO: a character should be able to equip armor
+//TODO: a character's defense should be modified by the armor they have equipped
+//TODO: a character should be able to equip a weapon
+//TODO: a character's attack should be modified by the weapon they have equipped
+//TODO: a character should be able to use items
+//TODO: a character should be able to use abilities
+//TODO: a character should be able to use spells
+//TODO: a character should be able to use magic items
+//TODO: a character should have base stats that are modified by their class.
 Character::Character(
   const std::string& name,
   int age = 25,
