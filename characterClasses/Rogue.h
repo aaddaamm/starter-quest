@@ -1,23 +1,15 @@
 #ifndef ROGUE_H
 #define ROGUE_H
 
-#include "../baseClasses/Character.h"
+#include "Wanderer.h"
 
-class Rogue : public Character {
+class Rogue : public Wanderer {
   public:
-    Rogue(
-      const std::string& name,
-      int age,
-      int health,
-      const std::string &race,
-      const std::string &origin,
-      const std::string &height,
-      const std::string &weight
-    );
+    Rogue();
 
-    void chooseVocation() override;
-
+    void vocation() override;
     void attack() override;
+    void defend() override;
 };
 
 #endif

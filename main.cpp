@@ -1,6 +1,14 @@
 #include <iostream>
 #include <string>
+#include <filesystem>
 #include "baseClasses/Character.h"
+#include "characterClasses/Wanderer.h"
+#include "characterClasses/Cleric.h"
+#include "characterClasses/Rogue.h"
+#include "characterClasses/Warrior.h"
+#include "characterClasses/Wizard.h"
+
+namespace fs = std::filesystem;
 
 const char* quest() {
   return "Quest!";
@@ -11,19 +19,32 @@ const char* quest() {
 int main() {
   std::string heroName;
   std::string heroClass;
-  std::string heroRace;
-  int heroLevel = 1;
 
   std::cout << "Enter your hero's name: ";
   std::cin >> heroName;
-  std::cout << "Enter your hero's class: ";
 
-  std::cin >> heroClass;
+  Character* myCharacter = new Character(heroName, 100);
 
-  Character character(heroName, 20, 100, heroRace, "Earth", "6'2\"", "180 lbs");
+  myCharacter->vocation();
+  myCharacter->attack();
 
-  std::cout << "Your hero's name is " << character.getName() << "\n" << std::endl;
-  std::cout << "Your hero's class is " << heroClass << "\n" << std::endl;
+  Wanderer* wanderer = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
+
+  if (wanderer){
+    wanderer->defend();
+  }
+
+  myCharacter->setCharacterClass(new Warrior());
+  myCharacter->vocation();
+  myCharacter->attack();
+
+
+
+  myCharacter->setCharacterClass(new Wizard());
+  myCharacter->vocation();
+  myCharacter->attack();
+
+  delete myCharacter;
 
   return 0;
 }

@@ -2,22 +2,15 @@
 #ifndef WARRIOR_H
 #define WARRIOR_H
 
-#include "../baseClasses/Character.h"
+#include "Wanderer.h"
 
-class Warrior : public Character {
+class Warrior : public Wanderer {
   public:
-    Warrior(
-      const std::string& name,
-      int age,
-      int health,
-      const std::string& race,
-      const std::string& origin,
-      const std::string& height,
-      const std::string& weight
-    );
+    Warrior();
 
-    void chooseVocation() override;
+    void vocation() override;
     void attack() override;
+    void defend() override;
 };
 
 #endif

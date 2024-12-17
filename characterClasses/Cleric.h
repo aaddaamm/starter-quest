@@ -1,7 +1,8 @@
 #ifndef CLERIC_H
 #define CLERIC_H
 
-#include "../baseClasses/Character.h"
+// base class of all starter classes
+#include "Wanderer.h"
 
 //TODO: A cleric should be able to heal
 //TODO: A cleric should be able to cast spells
@@ -9,20 +10,16 @@
 //TODO: A cleric's attack should be modified by the weapon they have equipped
 
 // Cleric class, inherits from Character
-class Cleric : public Character {
+class Cleric : public Wanderer {
   public:
-    Cleric(
-      const std::string& name,
-      int age,
-      int health,
-      const std::string &race,
-      const std::string &origin,
-      const std::string &height,
-      const std::string &weight
-    );
+    Cleric();
 
-    void chooseVocation() override;
+    void vocation() override;
     void attack() override;
+    void defend() override;
+
+    void heal();
+    void castSpell();
 };
 
 #endif

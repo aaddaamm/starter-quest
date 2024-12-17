@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Character.h"
-#include "Stats.h"
+#include "../characterClasses/Wanderer.h"
 
 //TODO: Add validation for the constructor
 //TODO: Add validation for the age
@@ -16,44 +16,48 @@
 //TODO: a character should be able to use spells
 //TODO: a character should be able to use magic items
 //TODO: a character should have base stats that are modified by their class.
-Character::Character(
-  const std::string& name,
-  int age = 25,
-  int health = 100,
-  const std::string& race = "Human",
-  const std::string& origin = "Earth",
-  const std::string& height = "6'0\"",
-  const std::string& weight = "180 lbs"
-) :
+
+Character::Character(const std::string& name, int health) :
   name(name),
-  age(age),
   health(health),
-  race(race),
-  origin(origin),
-  height(height),
-  weight(weight),
-  stats() {
-    // Add validation here,
-    // e.g., check if age is non-negative
+  characterClass(new Wanderer()) {}
+
+void Character::setCharacterClass(CharacterClass* newClass) {
+  if (newClass != nullptr) {
+    delete this->characterClass;
+  }
+
+  this->characterClass = newClass;
 }
 
-void Character::chooseVocation() {
-  std::cout << name << " is undecided about their vocation" << std::endl;
+CharacterClass* Character::getCharacterClass() const {
+  return this->characterClass;
+}
+
+void Character::vocation() {
+  if (this->characterClass != nullptr) {
+    this->characterClass->vocation();
+  } else {
+    std::cout << name << " has not chosen a vocation yet." << std::endl;
+  }
 }
 
 void Character::attack() {
-  std::cout << name << " attacks with the basic attack!" << std::endl;
+  if (this->characterClass != nullptr) {
+    this->characterClass->attack();
+  } else {
+    std::cout << name << " attacks with a basic attack." << std::endl;
+  }
 }
 
-void Character::setName(const std::string& name) {
-  this->name = name;
+void Character::defend() {
+  if (this->characterClass != nullptr) {
+    this->characterClass->defend();
+  } else {
+    std::cout << name << " defends with a basic shield." << std::endl;
+  }
 }
 
-int Character::getAge() const { return age; }
-int Character::getHealth() const { return health; }
-
-const std::string& Character::getName() const { return name; }
-const std::string& Character::getRace() const { return race; }
-const std::string& Character::getOrigin() const { return origin; }
-const std::string& Character::getHeight() const { return height; }
-const std::string& Character::getWeight() const { return weight; }
+Character::~Character() {
+  delete this->characterClass;
+}

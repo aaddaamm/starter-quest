@@ -1,20 +1,16 @@
 #include "Warrior.h"
 #include <iostream>
 
-Warrior::Warrior(
-  const std::string& name,
-  int age,
-  int health,
-  const std::string& race,
-  const std::string& origin,
-  const std::string& height,
-  const std::string& weight
-) : Character(name, age, 200, race, origin, height, weight) {}
+Warrior::Warrior() : Wanderer() {}
 
-void Warrior::chooseVocation() {
-  std::cout << name << " has chosen the vocation of Warrior!" << std::endl;
+void Warrior::vocation() {
+  std::cout << "Character has chosen the vocation of Warrior!" << std::endl;
 }
 
 void Warrior::attack() {
-  std::cout << name << " attacks with a sword!" << std::endl;
+  std::cout << "Character attacks with a sword!" << std::endl;
+}
+
+void Warrior::defend() {
+  std::cout << "Character defends with a shield!" << std::endl;
 }

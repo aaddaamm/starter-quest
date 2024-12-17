@@ -4,41 +4,31 @@
 #include <string>
 #include "Stats.h"
 
+#include "../characterClasses/CharacterClass.h"
+
+// Character class, the base class for all characters
+// TODO: i need to allow all classes to access the character's Name
 class Character {
 protected:
-  int age;
   int health;
   std::string name;
-  std::string race;
-  std::string origin;
-  std::string height;
-  std::string weight;
-  Stats stats;
+  CharacterClass* characterClass;
 
 public:
-  Character(
-    const std::string& name,
-    int age,
-    int health,
-    const std::string& race,
-    const std::string& origin,
-    const std::string& height,
-    const std::string& weight
-  );
+  Character(const std::string& name, int health);
+  void setCharacterClass(CharacterClass* characterClass);
+  CharacterClass* getCharacterClass() const;
 
-  virtual void chooseVocation();
-  virtual void attack();
-
-  int getAge() const;
+  std::string getName() const;
   int getHealth() const;
-  const std::string& getName() const;
-  void setName(const std::string& name);
-  const std::string& getRace() const;
-  const std::string& getOrigin() const;
-  const std::string& getHeight() const;
-  const std::string& getWeight() const;
 
-  virtual ~Character() = default;
+  // Delegated class methods
+  void vocation();
+  void attack();
+  void defend();
+
+  // Destructor for the character class
+  virtual ~Character();
 };
 
 #endif

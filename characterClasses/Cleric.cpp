@@ -4,20 +4,24 @@
 // TODO: a cleric should have unique stats
 // TODO: a cleric should have unique abilities
 // TODO: a cleric should have unique spells
-Cleric::Cleric(
-  const std::string& name,
-  int age,
-  int health,
-  const std::string &race,
-  const std::string &origin,
-  const std::string &height,
-  const std::string &weight
-) : Character(name, age, 210, race, origin, height, weight) {}
+Cleric::Cleric() : Wanderer() {}
 
-void Cleric::chooseVocation() {
-  std::cout << name << " has chosen the vocation of Cleric!" << std::endl;
+void Cleric::vocation() {
+  std::cout << "Character has chosen the vocation of Cleric!" << std::endl;
 }
 
 void Cleric::attack() {
-  std::cout << name << " casts a healing spell!" << std::endl;
+  std::cout << "Character casts a holy spell!" << std::endl;
+}
+
+void Cleric::defend() {
+  std::cout << "Character defends with a shield!" << std::endl;
+}
+
+void Cleric::heal() {
+  std::cout << "Character heals a target!" << std::endl;
+}
+
+void Cleric::castSpell() {
+  std::cout << "Character casts a spell!" << std::endl;
 }
