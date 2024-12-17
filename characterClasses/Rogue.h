@@ -2,6 +2,7 @@
 #define ROGUE_H
 
 #include "Wanderer.h"
+#include "Character.h"
 
 class Rogue : public Wanderer {
   public:

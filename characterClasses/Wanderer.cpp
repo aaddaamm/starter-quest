@@ -6,13 +6,13 @@
 Wanderer::Wanderer() : CharacterClass() {}
 
 void Wanderer::vocation() {
-  std::cout << "Wanderer has no class" << std::endl;
+  std::cout << character->getName() << " has no class" << std::endl;
 }
 
 void Wanderer::attack() {
-  std::cout << "Wanderer attacks with a basic attack!" << std::endl;
+  std::cout << character->getName() << " attacks with a basic attack!" << std::endl;
 }
 
 void Wanderer::defend() {
-  std::cout << "Wanderer defends with a basic defense!" << std::endl;
+  std::cout << character->getName() << " defends with a basic defense!" << std::endl;
 }

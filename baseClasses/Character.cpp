@@ -20,7 +20,9 @@
 Character::Character(const std::string& name, int health) :
   name(name),
   health(health),
-  characterClass(new Wanderer()) {}
+  characterClass(new Wanderer()) {
+    characterClass->setCharacter(this);
+  }
 
 void Character::setCharacterClass(CharacterClass* newClass) {
   if (newClass != nullptr) {
@@ -28,6 +30,11 @@ void Character::setCharacterClass(CharacterClass* newClass) {
   }
 
   this->characterClass = newClass;
+  characterClass->setCharacter(this);
+}
+
+std::string Character::getName() const {
+  return this->name;
 }
 
 CharacterClass* Character::getCharacterClass() const {

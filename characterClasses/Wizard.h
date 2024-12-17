@@ -2,6 +2,7 @@
 #define WIZARD_H
 
 #include "Wanderer.h"
+#include "Character.h"
 
 class Wizard : public Wanderer {
   public:

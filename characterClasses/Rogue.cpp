@@ -4,13 +4,13 @@
 Rogue::Rogue() : Wanderer() {}
 
 void Rogue::vocation() {
-  std::cout << "Character has chosen the vocation of Rogue!" << std::endl;
+  std::cout << character->getName() << " has chosen the vocation of Rogue!" << std::endl;
 }
 
 void Rogue::attack() {
-  std::cout << "Character attacks with a dagger!" << std::endl;
+  std::cout << character->getName() << " attacks with a dagger!" << std::endl;
 }
 
 void Rogue::defend() {
-  std::cout << "Character defends with a parry!" << std::endl;
+  std::cout << character->getName() << " defends with a parry!" << std::endl;
 }

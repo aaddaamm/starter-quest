@@ -3,6 +3,7 @@
 
 // base class of all starter classes
 #include "Wanderer.h"
+#include "Character.h"
 
 //TODO: A cleric should be able to heal
 //TODO: A cleric should be able to cast spells
