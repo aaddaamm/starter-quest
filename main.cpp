@@ -22,6 +22,20 @@ bool continue_quest() {
   return response == 'y';
 }
 
+void renameCharacter(Character* character) {
+  std::string newName;
+  std::cout << "Enter a new name for your character: ";
+  std::cin >> newName;
+  character->renameCharacter(newName);
+}
+
+void testCharacter(Character* character, CharacterClass* newClass) {
+  character->setCharacterClass(newClass);
+  character->vocation();
+  character->attack();
+  character->defend();
+}
+
 // Main function
 // TODO: a user should be able to pick a class for their character
 int main() {
@@ -39,9 +53,6 @@ int main() {
 
     myCharacter = new Character(heroName, 100);
 
-    myCharacter->vocation();
-    myCharacter->attack();
-
     Wanderer* wanderer = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
 
     if (wanderer){
@@ -49,14 +60,10 @@ int main() {
     }
 
     CharacterClass* warrior = new Warrior();
-    myCharacter->setCharacterClass(warrior);
-    myCharacter->vocation();
-    myCharacter->attack();
+    testCharacter(myCharacter, warrior);
 
     CharacterClass* wizard = new Wizard();
-    myCharacter->setCharacterClass(wizard);
-    myCharacter->vocation();
-    myCharacter->attack();
+    testCharacter(myCharacter, wizard);
 
   } while (continue_quest());
 
