@@ -1,5 +1,5 @@
 /**
- * @file DiceRoller.cpp
+ * @file DiceRoller.h
  * @brief A utility class for simulating dice rolls for tabletop games.
  *
  * This class provides functionality for simulating various dice rolls with
@@ -7,6 +7,8 @@
  * modifiers, and target checks. It uses the Mersenne Twister algorithm for
  * high-quality random number generation.
  */
+#pragma once
+
 #include <random>
 #include <iostream>
 #include <variant>
@@ -23,7 +25,6 @@ enum class ErrorCode {
     ValidParameters,
     Success
 };
-
 
 /**
  * @class DiceRoller
@@ -48,78 +49,44 @@ private:
          * @brief Constructor for success result
          * @param roll_value The successful roll value
          */
-        Result(int roll_value) : value(roll_value) {}
+        Result(int roll_value);
 
         /**
          * @brief Constructor for error result
          * @param error The error code
          */
-        Result(ErrorCode error) : value(error) {}
+        Result(ErrorCode error);
 
         /**
          * @brief Check if the result is an error
          * @return true if the result is an error, false otherwise
          */
-        bool isError() const {
-            return std::holds_alternative<ErrorCode>(value);
-        }
+        bool isError() const;
 
         /**
          * @brief Get the roll value (only valid if !isError())
          * @return The roll value
          */
-        int getRollValue() const {
-            return std::get<int>(value);
-        }
+        int getRollValue() const;
 
         /**
          * @brief Get the error code (only valid if isError())
          * @return The error code
          */
-        ErrorCode getError() const {
-            return std::get<ErrorCode>(value);
-        }
+        ErrorCode getError() const;
 
         /**
          * @brief Implicit conversion to int for backward compatibility
          * @return The roll value or 0 if error
          */
-        operator int() const {
-            if (isError()) {
-                return 0;
-            }
-            return getRollValue();
-        }
+        operator int() const;
     };
-
-    ErrorCode validateParameters(int sides = 6, int times = 1, int modifier = 0, int target = 0) {
-        if (sides <= 0) {
-            std::cout << "Invalid number of sides: " << sides << std::endl;
-            return ErrorCode::InvalidNumberOfSides;
-        }
-        if (times <= 0) {
-            std::cout << "Invalid number of times: " << times << std::endl;
-            return ErrorCode::InvalidNumberOfTimes;
-        }
-        if (modifier < 0) {
-            std::cout << "Invalid modifier: " << modifier << std::endl;
-            return ErrorCode::InvalidModifier;
-        }
-        if (target < 0) {
-            std::cout << "Invalid target: " << target << std::endl;
-            return ErrorCode::InvalidTarget;
-        }
-        return ErrorCode::ValidParameters;
-    }
 
 public:
     /**
      * @brief Constructor that initializes the random number generator with a random seed.
      */
-    DiceRoller() {
-        std::random_device rd;
-        generator.seed(rd());
-    }
+    DiceRoller();
 
     /**
      * @brief Roll a single die with the specified number of sides.
@@ -127,14 +94,7 @@ public:
      * @param sides The number of sides on the die.
      * @return Result containing the die roll value or an error code.
      */
-    Result roll(int sides) {
-        if (sides <= 0) {
-            std::cout << "Invalid number of sides: " << sides << std::endl;
-            return ErrorCode::InvalidNumberOfSides;
-        }
-        std::uniform_int_distribution<int> distribution(1, sides);
-        return distribution(generator);
-    }
+    Result roll(int sides);
 
     /**
      * @brief Roll a die with the specified number of sides multiple times and sum the results.
@@ -143,22 +103,7 @@ public:
      * @param times The number of times to roll the die.
      * @return Result containing the sum of all die rolls or an error code.
      */
-    Result roll(int sides, int times) {
-        ErrorCode error = validateParameters(sides, times);
-        if (error != ErrorCode::ValidParameters) {
-            return error;
-        }
-
-        int total = 0;
-        for (int i = 0; i < times; i++) {
-            Result single_roll = roll(sides);
-            if (single_roll.isError()) {
-                return single_roll.getError();
-            }
-            total += single_roll.getRollValue();
-        }
-        return total;
-    }
+    Result roll(int sides, int times);
 
     /**
      * @brief Roll a die multiple times and add a fixed modifier to the sum.
@@ -168,19 +113,7 @@ public:
      * @param modifier The value to add to the sum of the rolls.
      * @return Result containing the sum of all die rolls plus the modifier, or an error code.
      */
-    Result roll(int sides, int times, int modifier) {
-        ErrorCode error = validateParameters(sides, times, modifier);
-        if (error != ErrorCode::ValidParameters) {
-            return error;
-        }
-
-        Result base_roll = roll(sides, times);
-        if (base_roll.isError()) {
-            return base_roll.getError();
-        }
-
-        return base_roll.getRollValue() + modifier;
-    }
+    Result roll(int sides, int times, int modifier);
 
     /**
      * @brief Roll a die multiple times with a modifier and check against a target number.
@@ -189,67 +122,43 @@ public:
      * @param times The number of times to roll the die.
      * @param modifier The value to add to the sum of the rolls.
      * @param target The target value that the roll must meet or exceed.
-     * @return Result containing 1 (true) if the modified roll >= target, 0 (false) if not, or an error code.
+     * @return Result containing 1 if the modified roll >= target, 0 if not, or an error code.
      */
-    Result roll(int sides, int times, int modifier, int target) {
-        ErrorCode error = validateParameters(sides, times, modifier, target);
-        if (error != ErrorCode::ValidParameters) {
-            return error;
-        }
-
-        Result modified_roll = roll(sides, times, modifier);
-        if (modified_roll.isError()) {
-            return modified_roll.getError();
-        }
-
-        return modified_roll.getRollValue() >= target ? 1 : 0;
-    }
+    Result roll(int sides, int times, int modifier, int target);
 
     /**
      * @brief Convenience method to roll a 4-sided die.
      * @return Result containing the result of rolling a 4-sided die.
      */
-    Result roll4() {
-        return roll(4);
-    }
+    Result roll4();
 
     /**
      * @brief Convenience method to roll a 6-sided die.
      * @return Result containing the result of rolling a 6-sided die.
      */
-    Result roll6() {
-        return roll(6);
-    }
+    Result roll6();
 
     /**
      * @brief Convenience method to roll an 8-sided die.
      * @return Result containing the result of rolling an 8-sided die.
      */
-    Result roll8() {
-        return roll(8);
-    }
+    Result roll8();
 
     /**
      * @brief Convenience method to roll a 10-sided die.
      * @return Result containing the result of rolling a 10-sided die.
      */
-    Result roll10() {
-        return roll(10);
-    }
+    Result roll10();
 
     /**
      * @brief Convenience method to roll a 12-sided die.
      * @return Result containing the result of rolling a 12-sided die.
      */
-    Result roll12() {
-        return roll(12);
-    }
+    Result roll12();
 
     /**
      * @brief Convenience method to roll a 20-sided die.
      * @return Result containing the result of rolling a 20-sided die.
      */
-    Result roll20() {
-        return roll(20);
-    }
+    Result roll20();
 };
