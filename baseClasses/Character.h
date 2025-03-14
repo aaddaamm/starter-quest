@@ -10,15 +10,23 @@
 // TODO: i need to allow all classes to access the character's Name
 class Character {
 protected:
-  int health;
   std::string name;
-  CharacterClass* characterClass;
+  int health;
+  int experience;
+  int level;
 
+  Stats baseStats;
+
+  CharacterClass* characterClass;
 public:
   Character(const std::string& name, int health);
-  void setCharacterClass(CharacterClass* characterClass);
-  CharacterClass* getCharacterClass() const;
 
+  // Setters and getters
+  void setCharacterClass(CharacterClass* characterClass);
+  void addExperience(int experience);
+  void renameCharacter(const std::string& newName);
+
+  CharacterClass* getCharacterClass() const;
   std::string getName() const;
   int getHealth() const;
 

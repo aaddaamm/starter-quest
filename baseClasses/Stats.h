@@ -20,22 +20,14 @@
 class Stats {
 public:
   Stats();
-  Stats(
-    int strength,
-    int dexterity,
-    int constitution,
-    int intelligence,
-    int wisdom,
-    int charisma
-  );
 
 private:
-  const int strength;
-  const int dexterity;
-  const int constitution;
-  const int intelligence;
-  const int wisdom;
-  const int charisma;
+  int strength;
+  int dexterity;
+  int constitution;
+  int intelligence;
+  int wisdom;
+  int charisma;
 };
 
 #endif
