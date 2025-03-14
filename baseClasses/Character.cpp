@@ -39,6 +39,11 @@ void Character::setCharacterClass(CharacterClass* newClass) {
 }
 
 void Character::addExperience(int experience) {
+  if (experience < 0) {
+    std::cout << "Experience cannot be negative." << std::endl;
+    return;
+  }
+
   this->experience += experience;
   // update level based on experience thresholds
   // common RPG pattern level = 1 + floor(sqrt(experience/100))
@@ -46,7 +51,6 @@ void Character::addExperience(int experience) {
   if (newLevel > this->level) {
     this->level = newLevel;
     std::cout << "Level up! " << this->name << " is now level " << this->level << std::endl;
-    this->experience = 0;
   }
 }
 
@@ -61,7 +65,7 @@ void Character::renameCharacter(const std::string& newName) {
     return;
   }
 
-  std::cout << "Renaming " << getName() << " to " << newName;
+  std::cout << "Renaming " << getName() << " to " << newName << "..." << std::endl;
 
   this->name = newName;
 }
