@@ -79,15 +79,17 @@ void welcome() {
 Character* start_game() {
   std::string heroName;
   std::string heroClass;
+
   std::cout << "Enter your hero's name: ";
   std::cin >> heroName;
-  Character* myCharacter = new Character(heroName, 100);
 
+  Character* myCharacter = new Character(heroName, 100);
   Wanderer* character = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
 
   std::cout << "Welcome, " << heroName << "!" << std::endl;
 
   heroClass = promptForClass();
+
   std::cout << "You have chosen the " << heroClass << " class." << std::endl;
 
   if (heroClass == "Warrior") {
@@ -107,23 +109,31 @@ Character* start_game() {
   return myCharacter;
 }
 
+// game scenario structure
+struct GameScenario {
+  std::string scenarioId;
+  std::string scenarioName;
+  std::string scenarioDescription;
+  std::vector<std::string> scenarioChoices;
+  std::vector<std::string> scenarioOutcomes;
+  std::vector<std::string> completionCriteria;
+  std::vector<std::string> rewards;
+  std::function<void()> onStart;
+  std::function<void()> onCompletion;
+};
+
+GameScenario getScenario(std::string scenarioName) {
+  // TODO: Implement scenario retrieval from database
+  return GameScenario();
+}
+
 // Main function
 int main() {
-  std::string heroName;
-  std::string heroClass;
-  Character* myCharacter = nullptr;
-
-  if (myCharacter != nullptr) {
-    delete myCharacter;
-  }
-
   welcome();
 
   Character* myCharacter = start_game();
 
   std::cout << "Goodbye!" << std::endl;
-
-  delete myCharacter;
 
   return 0;
 }
