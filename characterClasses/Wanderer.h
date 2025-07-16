@@ -2,7 +2,7 @@
 #define WANDERER_H
 
 #include "CharacterClass.h"
-#include "Character.h"
+#include "../baseClasses/Character.h"
 
 // while a wanderer is a starting class
 // it can retain its own stats and abilites

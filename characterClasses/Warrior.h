@@ -3,7 +3,6 @@
 #define WARRIOR_H
 
 #include "Wanderer.h"
-#include "Character.h"
 
 class Warrior : public Wanderer {
   public:

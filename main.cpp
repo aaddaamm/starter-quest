@@ -1,22 +1,27 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
 #include <vector>
+#include <functional>
+#include <thread>
+#include <chrono>
+#include <fstream>
+#include <sstream>
 #include "baseClasses/Character.h"
 #include "characterClasses/Wanderer.h"
 #include "characterClasses/Cleric.h"
 #include "characterClasses/Rogue.h"
 #include "characterClasses/Warrior.h"
 #include "characterClasses/Wizard.h"
-namespace fs = std::filesystem;
+
+using namespace std;
+
+vector<string> validClasses = {"Warrior", "Mage", "Rogue", "Cleric", "Wizard"};
 
 const char* quest() {
   return "Quest!";
 }
 
-bool isValidClass(std::string selectedClass) {
-  std::vector<std::string> validClasses = {"Warrior", "Mage", "Rogue", "Cleric"};
-
+bool isValidClass(string selectedClass) {
   for (const auto& className : validClasses) {
     if (selectedClass == className) {
       return true;
@@ -25,25 +30,24 @@ bool isValidClass(std::string selectedClass) {
   return false;
 }
 
-std::string promptForClass() {
-  std::vector<std::string> validClasses = {"Warrior", "Mage", "Rogue", "Cleric"};
-  std::string userInput;
+string promptForClass() {
+  string userInput;
   bool validSelection = false;
 
   while (!validSelection) {
-    std::cout << "Choose your class: " << std::endl;
+    cout << "Choose your class: " << endl;
 
     for (const auto& className : validClasses) {
-      std::cout << className << std::endl;
+      cout << className << endl;
     }
 
-    std::cin >> userInput;
+    cin >> userInput;
 
     if (isValidClass(userInput)) {
       validSelection = true;
       return userInput;
     } else {
-      std::cout << "Invalid class. Please try again." << std::endl;
+      cout << "Invalid class. Please try again." << endl;
     }
   }
 
@@ -52,16 +56,16 @@ std::string promptForClass() {
 
 bool continue_quest() {
   char response;
-  std::cout << "Do you want to continue your quest? (y/n): ";
-  std::cin >> response;
+  cout << "Do you want to continue your quest? (y/n): ";
+  cin >> response;
 
   return response == 'y';
 }
 
 void renameCharacter(Character* character) {
-  std::string newName;
-  std::cout << "Enter a new name for your character: ";
-  std::cin >> newName;
+  string newName;
+  cout << "Enter a new name for your character: ";
+  cin >> newName;
   character->renameCharacter(newName);
 }
 
@@ -73,24 +77,41 @@ void testCharacter(Character* character, CharacterClass* newClass) {
 }
 
 void welcome() {
-  std::cout << "Welcome to the game!" << std::endl;
+    // TODO: For WebAssembly builds, this file loading will not work.
+    // We need to use Emscripten's file packaging system (`--preload-file assets/title.txt@assets/title.txt`)
+    // and then read the file from the virtual file system.
+    ifstream titleFile("assets/title.txt");
+    if (titleFile.is_open()) {
+        stringstream buffer;
+        buffer << titleFile.rdbuf();
+        cout << buffer.str() << endl;
+        titleFile.close();
+    } else {
+        // Fallback if the file can't be opened
+        cout << "=================" << endl;
+        cout << "  STARTER QUEST  " << endl;
+        cout << "=================" << endl;
+    }
+
+    cout << "\n\nWelcome to your adventure..." << endl;
+    this_thread::sleep_for(chrono::seconds(2));
 }
 
 Character* start_game() {
-  std::string heroName;
-  std::string heroClass;
+  string heroName;
+  string heroClass;
 
-  std::cout << "Enter your hero's name: ";
-  std::cin >> heroName;
+  cout << "Enter your hero's name: ";
+  cin >> heroName;
 
   Character* myCharacter = new Character(heroName, 100);
   Wanderer* character = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
 
-  std::cout << "Welcome, " << heroName << "!" << std::endl;
+  cout << "Welcome, " << heroName << "!" << endl;
 
   heroClass = promptForClass();
 
-  std::cout << "You have chosen the " << heroClass << " class." << std::endl;
+  cout << "You have chosen the " << heroClass << " class." << endl;
 
   if (heroClass == "Warrior") {
     myCharacter->setCharacterClass(new Warrior());
@@ -111,18 +132,18 @@ Character* start_game() {
 
 // game scenario structure
 struct GameScenario {
-  std::string scenarioId;
-  std::string scenarioName;
-  std::string scenarioDescription;
-  std::vector<std::string> scenarioChoices;
-  std::vector<std::string> scenarioOutcomes;
-  std::vector<std::string> completionCriteria;
-  std::vector<std::string> rewards;
-  std::function<void()> onStart;
-  std::function<void()> onCompletion;
+  string scenarioId;
+  string scenarioName;
+  string scenarioDescription;
+  vector<string> scenarioChoices;
+  vector<string> scenarioOutcomes;
+  vector<string> completionCriteria;
+  vector<string> rewards;
+  function<void()> onStart;
+  function<void()> onCompletion;
 };
 
-GameScenario getScenario(std::string scenarioName) {
+GameScenario getScenario(string scenarioName) {
   // TODO: Implement scenario retrieval from database
   return GameScenario();
 }
@@ -133,7 +154,7 @@ int main() {
 
   Character* myCharacter = start_game();
 
-  std::cout << "Goodbye!" << std::endl;
+  cout << "Goodbye!" << endl;
 
   return 0;
 }
