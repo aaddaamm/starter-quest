@@ -19,6 +19,7 @@ SOURCES=" \
   characterClasses/Warrior.cpp \
   characterClasses/Wizard.cpp \
   utils/DiceRoller.cpp \
+  ui/Menu.cpp \
   main.cpp \
 "
 
@@ -27,6 +28,7 @@ INCLUDES=" \
   -I baseClasses \
   -I characterClasses \
   -I utils \
+  -I ui \
 "
 
 # Set the output file for the compiled WebAssembly module.
@@ -36,6 +38,10 @@ OUTPUT_FILE="wasm/quest.js"
 # -O3 is an optimization flag for performance.
 # -s WASM=1 specifies that we want WebAssembly output.
 # -s "EXPORTED_RUNTIME_METHODS" makes C++ functions available to JavaScript.
+
+# TODO: The interactive menu in ui/Menu.cpp uses terminal-specific commands
+# that will not work in the WebAssembly build. It is included here to prevent
+# compilation errors, but a web-based UI will be needed for the browser version.
 echo "Compiling C++ to WebAssembly..."
 emcc $SOURCES $INCLUDES -o $OUTPUT_FILE -O3 -s WASM=1 \
   -s "EXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']"

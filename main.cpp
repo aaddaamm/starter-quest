@@ -12,8 +12,11 @@
 #include "characterClasses/Rogue.h"
 #include "characterClasses/Warrior.h"
 #include "characterClasses/Wizard.h"
+#include "ui/Menu.h"
+#include <limits>
 
 using namespace std;
+using namespace ui;
 
 vector<string> validClasses = {"Warrior", "Mage", "Rogue", "Cleric", "Wizard"};
 
@@ -21,38 +24,7 @@ const char* quest() {
   return "Quest!";
 }
 
-bool isValidClass(string selectedClass) {
-  for (const auto& className : validClasses) {
-    if (selectedClass == className) {
-      return true;
-    }
-  }
-  return false;
-}
 
-string promptForClass() {
-  string userInput;
-  bool validSelection = false;
-
-  while (!validSelection) {
-    cout << "Choose your class: " << endl;
-
-    for (const auto& className : validClasses) {
-      cout << className << endl;
-    }
-
-    cin >> userInput;
-
-    if (isValidClass(userInput)) {
-      validSelection = true;
-      return userInput;
-    } else {
-      cout << "Invalid class. Please try again." << endl;
-    }
-  }
-
-  return userInput;
-}
 
 bool continue_quest() {
   char response;
@@ -103,15 +75,17 @@ Character* start_game() {
 
   cout << "Enter your hero's name: ";
   cin >> heroName;
+  // Clear the input buffer to prevent issues with the new menu system
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   Character* myCharacter = new Character(heroName, 100);
   Wanderer* character = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
 
   cout << "Welcome, " << heroName << "!" << endl;
 
-  heroClass = promptForClass();
+  heroClass = ui::selectFromList("Choose your class:", validClasses);
 
-  cout << "You have chosen the " << heroClass << " class." << endl;
+  cout << "\nYou have chosen the " << heroClass << " class." << endl;
 
   if (heroClass == "Warrior") {
     myCharacter->setCharacterClass(new Warrior());
