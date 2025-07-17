@@ -29,6 +29,8 @@ public:
   CharacterClass* getCharacterClass() const;
   std::string getName() const;
   int getHealth() const;
+  int getExperience() const;
+  int getLevel() const;
 
   // Delegated class methods
   void vocation();

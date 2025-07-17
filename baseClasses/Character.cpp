@@ -78,6 +78,18 @@ CharacterClass* Character::getCharacterClass() const {
   return this->characterClass;
 }
 
+int Character::getHealth() const {
+  return this->health;
+}
+
+int Character::getExperience() const {
+  return this->experience;
+}
+
+int Character::getLevel() const {
+  return this->level;
+}
+
 void Character::vocation() {
   if (this->characterClass != nullptr) {
     this->characterClass->vocation();

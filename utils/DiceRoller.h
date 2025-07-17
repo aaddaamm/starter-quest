@@ -14,19 +14,6 @@
 #include <variant>
 
 /**
- * @enum ErrorCode
- * @brief Error codes for dice rolling operations
- */
-enum class ErrorCode {
-    InvalidNumberOfSides,
-    InvalidNumberOfTimes,
-    InvalidModifier,
-    InvalidTarget,
-    ValidParameters,
-    Success
-};
-
-/**
  * @class DiceRoller
  * @brief Simulates dice rolls for tabletop games.
  *
@@ -35,8 +22,19 @@ enum class ErrorCode {
  * with a random device to ensure high-quality randomness.
  */
 class DiceRoller {
-private:
-    std::mt19937 generator; ///< Mersenne Twister random number generator
+public:
+    /**
+     * @enum ErrorCode
+     * @brief Error codes for dice rolling operations
+     */
+    enum class ErrorCode {
+        InvalidNumberOfSides,
+        InvalidNumberOfTimes,
+        InvalidModifier,
+        InvalidTarget,
+        ValidParameters,
+        Success
+    };
 
     /**
      * @struct Result
@@ -82,7 +80,6 @@ private:
         operator int() const;
     };
 
-public:
     /**
      * @brief Constructor that initializes the random number generator with a random seed.
      */
@@ -161,4 +158,8 @@ public:
      * @return Result containing the result of rolling a 20-sided die.
      */
     Result roll20();
+
+private:
+    std::mt19937 generator; ///< Mersenne Twister random number generator
+    ErrorCode validateParameters(int sides, int times, int modifier, int target);
 };
