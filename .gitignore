@@ -57,5 +57,7 @@ vgcore.*
 *.stackdump
 *.core
 
-# Executable files
-bin/*
+# Build output and cache
+.cache/
+bin/
+wasm/

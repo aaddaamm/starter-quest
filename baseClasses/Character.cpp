@@ -17,9 +17,14 @@
 //TODO: a character should be able to use magic items
 //TODO: a character should have base stats that are modified by their class.
 
+const int maxNameLength = 20;
+
 Character::Character(const std::string& name, int health) :
   name(name),
   health(health),
+  baseStats(Stats()),
+  experience(0),
+  level(1),
   characterClass(new Wanderer()) {
     characterClass->setCharacter(this);
   }
@@ -33,12 +38,56 @@ void Character::setCharacterClass(CharacterClass* newClass) {
   characterClass->setCharacter(this);
 }
 
+void Character::addExperience(int experience) {
+  if (experience < 0) {
+    std::cout << "Experience cannot be negative." << std::endl;
+    return;
+  }
+
+  this->experience += experience;
+  // update level based on experience thresholds
+  // common RPG pattern level = 1 + floor(sqrt(experience/100))
+  int newLevel = 1 + floor(sqrt(this->experience / 100));
+  if (newLevel > this->level) {
+    this->level = newLevel;
+    std::cout << "Level up! " << this->name << " is now level " << this->level << std::endl;
+  }
+}
+
+void Character::renameCharacter(const std::string& newName) {
+  if (newName.empty()) {
+    std::cout << "Name cannot be empty." << std::endl;
+    return;
+  }
+
+  if (newName.length() > maxNameLength) {
+    std::cout << "Name cannot be longer than " << maxNameLength << " characters." << std::endl;
+    return;
+  }
+
+  std::cout << "Renaming " << getName() << " to " << newName << "..." << std::endl;
+
+  this->name = newName;
+}
+
 std::string Character::getName() const {
   return this->name;
 }
 
 CharacterClass* Character::getCharacterClass() const {
   return this->characterClass;
+}
+
+int Character::getHealth() const {
+  return this->health;
+}
+
+int Character::getExperience() const {
+  return this->experience;
+}
+
+int Character::getLevel() const {
+  return this->level;
 }
 
 void Character::vocation() {

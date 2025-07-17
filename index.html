@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Starter Quest</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        color: #444;
+      }
+      #container {
+        display: inline-block;
+        text-align: left;
+        width: 80%;
+        max-width: 800px;
+      }
+      #output {
+        width: 100%;
+        height: 500px;
+        background-color: #000;
+        color: #0f0;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        border: 2px solid #ccc;
+        padding: 10px;
+        box-sizing: border-box;
+        resize: none;
+      }
+      #status {
+        font-style: italic;
+        color: #777;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .emscripten_canvas {
+        border: 2px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>Starter Quest</h1>
+      <div id="status">Initializing...</div>
+      <textarea id="output" readonly></textarea>
+      <canvas class="emscripten_canvas" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+
+    <script type='text/javascript'>
+      var statusElement = document.getElementById('status');
+      var outputElement = document.getElementById('output');
+
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.log(text);
+            if (outputElement) {
+              outputElement.value += text + "\n";
+              outputElement.scrollTop = outputElement.scrollHeight; // focus on bottom
+            }
+          };
+        })(),
+        printErr: function(text) {
+          if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+          console.error(text);
+          if (outputElement) {
+              outputElement.value += "[ERROR] " + text + "\n";
+              outputElement.scrollTop = outputElement.scrollHeight;
+            }
+        },
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+          canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+          return canvas;
+        })(),
+        setStatus: function(text) {
+          if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+          if (text === Module.setStatus.last.text) return;
+          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var now = Date.now();
+          if (m && now - Module.setStatus.last.time < 30) return;
+          Module.setStatus.last.time = now;
+          Module.setStatus.last.text = text;
+          if (m) {
+            text = m[1];
+          }
+          statusElement.innerHTML = text;
+          if (text === "Running...") {
+              setTimeout(() => {
+                  statusElement.style.display = 'none';
+              }, 500);
+          }
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies - left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+      Module.setStatus('Downloading...');
+      window.onerror = function(event) {
+        Module.setStatus('Exception thrown, see JavaScript console');
+        Module.setStatus = function(text) {
+          if (text) console.error('[post-exception status] ' + text);
+        };
+      };
+    </script>
+    <script async src="quest.js"></script>
+  </body>
+</html>

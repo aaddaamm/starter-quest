@@ -1,50 +1,134 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
+#include <vector>
+#include <functional>
+#include <thread>
+#include <chrono>
+#include <fstream>
+#include <sstream>
 #include "baseClasses/Character.h"
 #include "characterClasses/Wanderer.h"
 #include "characterClasses/Cleric.h"
 #include "characterClasses/Rogue.h"
 #include "characterClasses/Warrior.h"
 #include "characterClasses/Wizard.h"
+#include "ui/Menu.h"
+#include <limits>
 
-namespace fs = std::filesystem;
+using namespace std;
+using namespace ui;
+
+vector<string> validClasses = {"Warrior", "Mage", "Rogue", "Cleric", "Wizard"};
 
 const char* quest() {
   return "Quest!";
 }
 
-// Main function
-// TODO: a user should be able to pick a class for their character
-int main() {
-  std::string heroName;
-  std::string heroClass;
 
-  std::cout << "Enter your hero's name: ";
-  std::cin >> heroName;
+
+bool continue_quest() {
+  char response;
+  cout << "Do you want to continue your quest? (y/n): ";
+  cin >> response;
+
+  return response == 'y';
+}
+
+void renameCharacter(Character* character) {
+  string newName;
+  cout << "Enter a new name for your character: ";
+  cin >> newName;
+  character->renameCharacter(newName);
+}
+
+void testCharacter(Character* character, CharacterClass* newClass) {
+  character->setCharacterClass(newClass);
+  character->vocation();
+  character->attack();
+  character->defend();
+}
+
+void welcome() {
+    // TODO: For WebAssembly builds, this file loading will not work.
+    // We need to use Emscripten's file packaging system (`--preload-file assets/title.txt@assets/title.txt`)
+    // and then read the file from the virtual file system.
+    ifstream titleFile("assets/title.txt");
+    if (titleFile.is_open()) {
+        stringstream buffer;
+        buffer << titleFile.rdbuf();
+        cout << buffer.str() << endl;
+        titleFile.close();
+    } else {
+        // Fallback if the file can't be opened
+        cout << "=================" << endl;
+        cout << "  STARTER QUEST  " << endl;
+        cout << "=================" << endl;
+    }
+
+    cout << "\n\nWelcome to your adventure..." << endl;
+    this_thread::sleep_for(chrono::seconds(2));
+}
+
+Character* start_game() {
+  string heroName;
+  string heroClass;
+
+  cout << "Enter your hero's name: ";
+  cin >> heroName;
+  // Clear the input buffer to prevent issues with the new menu system
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
   Character* myCharacter = new Character(heroName, 100);
+  Wanderer* character = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
 
-  myCharacter->vocation();
-  myCharacter->attack();
+  cout << "Welcome, " << heroName << "!" << endl;
 
-  Wanderer* wanderer = dynamic_cast<Wanderer*>(myCharacter->getCharacterClass());
+  heroClass = ui::selectFromList("Choose your class:", validClasses);
 
-  if (wanderer){
-    wanderer->defend();
+  cout << "\nYou have chosen the " << heroClass << " class." << endl;
+
+  if (heroClass == "Warrior") {
+    myCharacter->setCharacterClass(new Warrior());
+  } else if (heroClass == "Wizard") {
+    myCharacter->setCharacterClass(new Wizard());
+  } else if (heroClass == "Cleric") {
+    myCharacter->setCharacterClass(new Cleric());
+  } else if (heroClass == "Rogue") {
+    myCharacter->setCharacterClass(new Rogue());
   }
 
-  myCharacter->setCharacterClass(new Warrior());
   myCharacter->vocation();
   myCharacter->attack();
+  myCharacter->defend();
 
+  return myCharacter;
+}
 
+// game scenario structure
+struct GameScenario {
+  string scenarioId;
+  string scenarioName;
+  string scenarioDescription;
+  vector<string> scenarioChoices;
+  vector<string> scenarioOutcomes;
+  vector<string> completionCriteria;
+  vector<string> rewards;
+  function<void()> onStart;
+  function<void()> onCompletion;
+};
 
-  myCharacter->setCharacterClass(new Wizard());
-  myCharacter->vocation();
-  myCharacter->attack();
+GameScenario getScenario(string scenarioName) {
+  // TODO: Implement scenario retrieval from database
+  return GameScenario();
+}
 
-  delete myCharacter;
+// Main function
+int main() {
+  welcome();
+
+  Character* myCharacter = start_game();
+
+  cout << "Goodbye!" << endl;
 
   return 0;
 }

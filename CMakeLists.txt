@@ -1,34 +1,75 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
+project(Quest)
 
-# Set the project name and version
-project(Quest VERSION 1.0)
-
-# Specify the C++ standard
+# Set the C++ standard for the project
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Specify the executable name and source files
-add_executable(Quest main.cpp)
+# --- Source File Management ---
+# Collect all project source files (except main.cpp) into a static library.
+# This promotes modularity and allows both the main executable and the test
+# runner to link against the same compiled code base without duplication.
+set(QUEST_SOURCES
+    baseClasses/Character.cpp
+    baseClasses/Creature.cpp
+    baseClasses/Item.cpp
+    baseClasses/Stats.cpp
+    baseClasses/Weapon.cpp
+    characterClasses/Cleric.cpp
+    characterClasses/Rogue.cpp
+    characterClasses/Wanderer.cpp
+    characterClasses/Warrior.cpp
+    characterClasses/Wizard.cpp
+    ui/Menu.cpp
+    utils/DiceRoller.cpp
+)
 
+add_library(QuestLib STATIC ${QUEST_SOURCES})
+
+# --- Include Directories ---
+# Add include directories required by the library.
+# PUBLIC propagation ensures that any target linking against QuestLib
+# will also have these include directories set up correctly.
+target_include_directories(QuestLib PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+)
+
+# --- Dependency Management (OpenSSL) ---
+# Find the OpenSSL library package and link it to our core library.
 find_package(OpenSSL REQUIRED)
+target_link_libraries(QuestLib PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 
-# Check if OpenSSL was found
-if(OpenSSL_FOUND)
-  # Link your target with OpenSSL libraries
-  target_link_libraries(Quest ${OpenSSL_LIBRARIES})
-else()
-  message(FATAL_ERROR "OpenSSL not found. Please install OpenSSL or check your installation.")
-endif()
+# --- Main Executable Definition ---
+add_executable(Quest main.cpp)
+target_link_libraries(Quest PRIVATE QuestLib)
 
-# Include the baseClasses directory for header files
-target_include_directories(Quest PRIVATE ${CMAKE_SOURCE_DIR}/baseClasses)
-target_include_directories(Quest PRIVATE ${CMAKE_SOURCE_DIR}/characterClasses)
 
-# Add source files from the baseClasses directory
-file(GLOB BASE_SOURCES "baseClasses/*.cpp")
-file(GLOB CHARACTER_SOURCES "characterClasses/*.cpp")
+# ====================================================================
+# Testing Setup with Catch2
+# ====================================================================
 
-target_sources(Quest PRIVATE ${BASE_SOURCES} ${CHARACTER_SOURCES})
+# Enable testing for the project. This is required for CTest to discover tests.
+enable_testing()
+include(CTest)
 
-# Optional: Set the output directory for the binary (can be customized)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+# --- Test Executable ---
+# Define the test executable target, including all our test files and the
+# downloaded Catch2 implementation file.
+add_executable(QuestTests
+    tests/main.test.cpp
+    tests/character.test.cpp
+    tests/catch_amalgamated.cpp
+)
+
+# Link the test executable against our QuestLib to get access to our project's code.
+target_link_libraries(QuestTests PRIVATE QuestLib)
+
+# Add the 'tests' directory to the include path for the test target. This is
+# crucial so that the test files can find `#include "catch_amalgamated.hpp"`.
+target_include_directories(QuestTests PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests"
+)
+
+# Register the test executable with CTest.
+add_test(NAME UnitTests COMMAND QuestTests)

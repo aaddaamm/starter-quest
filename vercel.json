@@ -1,0 +1,6 @@
+{
+  "framework": "other",
+  "installCommand": "npm install vercel-emscripten-setup",
+  "buildCommand": "npx vercel-emscripten-setup && chmod +x ./build-wasm.sh && ./build-wasm.sh",
+  "outputDirectory": "wasm"
+}
