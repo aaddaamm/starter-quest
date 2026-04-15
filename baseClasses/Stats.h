@@ -29,13 +29,20 @@ public:
     int charisma
   );
 
+  int getStrength() const;
+  int getDexterity() const;
+  int getConstitution() const;
+  int getIntelligence() const;
+  int getWisdom() const;
+  int getCharisma() const;
+
 private:
-  const int strength;
-  const int dexterity;
-  const int constitution;
-  const int intelligence;
-  const int wisdom;
-  const int charisma;
+  int strength;
+  int dexterity;
+  int constitution;
+  int intelligence;
+  int wisdom;
+  int charisma;
 };
 
 #endif

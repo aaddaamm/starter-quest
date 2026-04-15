@@ -22,3 +22,10 @@ Stats::Stats(
   intelligence(intelligence),
   wisdom(wisdom),
   charisma(charisma) {};
+
+int Stats::getStrength() const     { return strength; }
+int Stats::getDexterity() const    { return dexterity; }
+int Stats::getConstitution() const { return constitution; }
+int Stats::getIntelligence() const { return intelligence; }
+int Stats::getWisdom() const       { return wisdom; }
+int Stats::getCharisma() const     { return charisma; }

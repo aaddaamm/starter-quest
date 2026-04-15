@@ -12,6 +12,10 @@ class Warrior : public Wanderer {
     void vocation() override;
     void attack() override;
     void defend() override;
+
+    Stats getBaseStats() override;
+    int rollAttack(const Stats& stats) override;
+    int getDefense(const Stats& stats) override;
 };
 
 #endif
