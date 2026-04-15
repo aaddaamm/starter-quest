@@ -5,6 +5,11 @@
 
 Wanderer::Wanderer() : CharacterClass() {}
 
+Stats Wanderer::getBaseStats() {
+  // Balanced starting stats
+  return Stats(10, 10, 10, 10, 10, 10);
+}
+
 void Wanderer::vocation() {
   std::cout << character->getName() << " has no class" << std::endl;
 }

@@ -59,3 +59,4 @@ vgcore.*
 
 # Executable files
 bin/*
+/.claude/settings.local.json

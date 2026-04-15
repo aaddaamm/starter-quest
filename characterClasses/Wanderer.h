@@ -12,6 +12,8 @@ class Wanderer : public CharacterClass {
     void vocation() override;
     void attack() override;
     void defend() override;
+
+    Stats getBaseStats() override;
 };
 
 #endif

@@ -1,10 +1,23 @@
 #include "Cleric.h"
 #include <iostream>
+#include <cstdlib>
 
-// TODO: a cleric should have unique stats
-// TODO: a cleric should have unique abilities
-// TODO: a cleric should have unique spells
 Cleric::Cleric() : Wanderer() {}
+
+// High WIS and CON — durable support fighter
+Stats Cleric::getBaseStats() {
+  return Stats(10, 10, 12, 10, 16, 10);
+}
+
+// WIS-based holy strike: moderate damage
+int Cleric::rollAttack(const Stats& stats) {
+  return stats.getWisdom() / 3 + (rand() % 4 + 1);
+}
+
+// CON-based: sturdy but not a tank
+int Cleric::getDefense(const Stats& stats) {
+  return stats.getConstitution() / 3 + 1;
+}
 
 void Cleric::vocation() {
   std::cout << character->getName() << " has chosen the vocation of Cleric!" << std::endl;

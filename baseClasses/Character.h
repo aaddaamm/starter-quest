@@ -13,6 +13,7 @@ protected:
   int health;
   std::string name;
   CharacterClass* characterClass;
+  Stats stats;
 
 public:
   Character(const std::string& name, int health);
@@ -21,6 +22,14 @@ public:
 
   std::string getName() const;
   int getHealth() const;
+  bool isAlive() const;
+  void takeDamage(int amount);
+
+  // Returns damage this character deals on an attack roll
+  int rollAttack() const;
+
+  // Returns this character's passive defense value
+  int getDefense() const;
 
   // Delegated class methods
   void vocation();

@@ -21,6 +21,10 @@ class Cleric : public Wanderer {
 
     void heal();
     void castSpell();
+
+    Stats getBaseStats() override;
+    int rollAttack(const Stats& stats) override;
+    int getDefense(const Stats& stats) override;
 };
 
 #endif
