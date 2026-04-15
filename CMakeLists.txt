@@ -11,14 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(Quest main.cpp)
 
 find_package(OpenSSL REQUIRED)
-
-# Check if OpenSSL was found
-if(OpenSSL_FOUND)
-  # Link your target with OpenSSL libraries
-  target_link_libraries(Quest ${OpenSSL_LIBRARIES})
-else()
-  message(FATAL_ERROR "OpenSSL not found. Please install OpenSSL or check your installation.")
-endif()
+target_link_libraries(Quest OpenSSL::SSL OpenSSL::Crypto)
 
 # Include the baseClasses directory for header files
 target_include_directories(Quest PRIVATE ${CMAKE_SOURCE_DIR}/baseClasses)
