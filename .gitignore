@@ -60,3 +60,5 @@ vgcore.*
 # Executable files
 bin/*
 /.claude/settings.local.json
+/.cache/clangd/index
+/.claude/worktrees
