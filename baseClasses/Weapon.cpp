@@ -1,2 +1,8 @@
-// TODO: a character should be able to equip a weapon
-// TODO: a character's attack should be modified by the weapon they have equipped
+#include "Weapon.h"
+
+Weapon::Weapon(const std::string& name, int damage, int statBonus)
+  : name(name), damage(damage), statBonus(statBonus) {}
+
+std::string Weapon::getName() const { return name; }
+int Weapon::getDamage() const       { return damage; }
+int Weapon::getStatBonus() const    { return statBonus; }
