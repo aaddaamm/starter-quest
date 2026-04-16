@@ -7,7 +7,6 @@
 #include "../characterClasses/CharacterClass.h"
 
 // Character class, the base class for all characters
-// TODO: i need to allow all classes to access the character's Name
 class Character {
 protected:
   int health;
